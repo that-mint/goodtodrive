@@ -30,7 +30,7 @@ async def on_message(message):
 @client.event
 async def on_reaction_add(reaction, user):
     pip = client.get_emoji(850738731274207262)
-    if reaction.me
+    if user == client.user:
         return
     elif reaction.emoji == pip:
         await reaction.message.add_reaction(pip)
