@@ -23,10 +23,10 @@ async def ping(ctx) :
 async def goodtodrive(ctx) :
     determine_flip = [1, 0]
     if random.choice(determine_flip) == 1:
-        await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262> 🏎️🌿")
+        await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️")
 
     else:
-        await ctx.send(f" {ctx.message.author.mention} isn't good to drive :( 🌿🚔🚨💥👪")
+        await ctx.send(f" {ctx.message.author.mention} isn't good to drive :( <:thepip:850738731274207262>🌿💥👪🚔🚨")
 @client.command(name="whoami")
 async def whoami(ctx) :
     await ctx.send(f"You are {ctx.message.author.mention}")
