@@ -34,4 +34,8 @@ async def whoami(ctx) :
 async def clear(ctx, amount=3) :
     await ctx.channel.purge(limit=amount)
 
+@client.command(name="source")
+async def source(ctx) :
+    await ctx.send(f" {ctx.message.author.mention} https://github.com/that-mint/goodtodrive")
+
 client.run(token)
