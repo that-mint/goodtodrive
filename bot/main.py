@@ -19,7 +19,7 @@ async def on_message(message):
     # we do not want the client to reply to itself
     if message.author == client.user:
         return
-    elif re.search("(?i)\bpip\b", message.content):
+    elif re.match("(?i)\bpip\b", message.content):
         emoji = client.get_emoji(850738731274207262)
         await message.add_reaction(emoji)
     else:
