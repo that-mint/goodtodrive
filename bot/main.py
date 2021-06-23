@@ -46,7 +46,7 @@ async def whoami(ctx) :
     await ctx.send(f"You are {ctx.message.author.mention}")
 
 @client.command(brief="ADMIN: Clears the chat", name="clear")
-async def clear(ctx, amount=3) :
+async def clear(ctx, amount=2) :
     await ctx.channel.purge(limit=amount)
 
 @client.command(brief="Links the source of the bot", name="source")
