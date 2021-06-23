@@ -9,7 +9,7 @@ client = commands.Bot(command_prefix=".")
 token = os.getenv("DISCORD_BOT_TOKEN")
 
 @client.event
-async def on_ready() :
+async def on_ready():
     await client.change_presence(activity = discord.Game("GTDB | DM .help"))
     print("I am online")
 
@@ -21,6 +21,8 @@ async def on_message(message):
     if 'pip' in message.content:
         emoji = get(client.get_all_emojis(), name='thepip')
         await client.add_reaction(message, emoji)
+    else
+        await client.process_commands(message)
 
 @client.command(brief="Ping the bot",)
 async def ping(ctx) :
