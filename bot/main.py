@@ -30,7 +30,7 @@ async def on_message(message):
 
 @client.command(brief="Ping the bot",)
 async def ping(ctx) :
-    await ctx.send(f"🏓 Pong with {str(round(client.latency, 2))}")
+    await ctx.send(f"🏓 Pong with {str(round(client.latency, 4))}")
 
 @client.command(brief="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
 async def goodtodrive(ctx) :
