@@ -13,11 +13,11 @@ async def on_ready() :
     await client.change_presence(activity = discord.Game("GTDB | .help"))
     print("I am online")
 
-@client.command(breif="Ping the bot",)
+@client.command(brief="Ping the bot",)
 async def ping(ctx) :
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 2))}")
 
-@client.command(breif="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
+@client.command(brief="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
 async def goodtodrive(ctx) :
     determine_flip = [1, 0]
     if random.choice(determine_flip) == 1:
@@ -26,15 +26,15 @@ async def goodtodrive(ctx) :
     else:
         await ctx.send(f" {ctx.message.author.mention} isn't good to drive :( <:thepip:850738731274207262>🌿💥👪🚔🚨")
 
-@client.command(breif="Mentions the user who used the command", name="whoami")
+@client.command(brief="Mentions the user who used the command", name="whoami")
 async def whoami(ctx) :
     await ctx.send(f"You are {ctx.message.author.mention}")
 
-@client.command(breif="ADMIN: Clears the chat", name="clear")
+@client.command(brief="ADMIN: Clears the chat", name="clear")
 async def clear(ctx, amount=3) :
     await ctx.channel.purge(limit=amount)
 
-@client.command(breif="Links the source of the bot", name="source")
+@client.command(brief="Links the source of the bot", name="source")
 async def source(ctx) :
     await ctx.send(f" {ctx.message.author.mention} https://github.com/that-mint/goodtodrive")
 
