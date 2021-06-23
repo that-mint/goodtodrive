@@ -19,7 +19,7 @@ async def on_ready() :
 async def ping(ctx) :
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 2))}")
 
-@client.command(name="goodtodrive", aliases=['gtb'])
+@client.command(name="goodtodrive", aliases=["gtd"])
 async def goodtodrive(ctx) :
     determine_flip = [1, 0]
     if random.choice(determine_flip) == 1:
