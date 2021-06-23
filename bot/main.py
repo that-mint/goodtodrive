@@ -5,7 +5,7 @@ import os
 import random
 from random import choice
 
-determine_flip = [1, 0]
+
 
 client = commands.Bot(command_prefix=".")
 token = os.getenv("DISCORD_BOT_TOKEN")
@@ -21,6 +21,7 @@ async def ping(ctx) :
 
 @client.command(name="goodtodrive")
 async def goodtodrive(ctx) :
+    determine_flip = [1, 0]
     if random.choice(determine_flip) == 1:
         await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262> 🏎️🌿")
 
