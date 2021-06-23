@@ -19,7 +19,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     if 'pip' in message.content:
-        emoji = get(client.get_all_emojis(), name='thepip')
+        emoji = client.get_emoji(850738731274207262)
         await client.add_reaction(message, emoji)
     else:
         await client.process_commands(message)
