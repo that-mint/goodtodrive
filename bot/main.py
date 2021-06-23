@@ -20,7 +20,7 @@ async def on_message(message):
         return
     elif "PIP" in message.content or "pip" in message.content:
         emoji = client.get_emoji(850738731274207262)
-        await message.add_reaction(message, emoji)
+        await message.add_reaction(emoji)
     else:
         await client.process_commands(message)
 
