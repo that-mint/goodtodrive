@@ -21,7 +21,7 @@ async def on_message(message):
     if 'pip' in message.content:
         emoji = get(client.get_all_emojis(), name='thepip')
         await client.add_reaction(message, emoji)
-    else
+    else:
         await client.process_commands(message)
 
 @client.command(brief="Ping the bot",)
