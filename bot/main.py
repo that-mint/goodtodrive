@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 import os
 import re
-
 import random
 from random import choice
 
@@ -27,6 +26,14 @@ async def on_message(message):
         await message.add_reaction(emoji)
     else:
         await client.process_commands(message)
+
+@client.event
+async def on_reaction_add(reaction, user):
+    pip = client.get_emoji(850738731274207262)
+    if reaction.me
+        return
+    elif reaction.emoji == pip:
+        await reaction.message.add_reaction(pip)
 
 @client.command(brief="Ping the bot",)
 async def ping(ctx) :
