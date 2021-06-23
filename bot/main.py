@@ -5,8 +5,6 @@ import os
 import random
 from random import choice
 
-
-
 client = commands.Bot(command_prefix=".")
 token = os.getenv("DISCORD_BOT_TOKEN")
 
@@ -27,6 +25,7 @@ async def goodtodrive(ctx) :
 
     else:
         await ctx.send(f" {ctx.message.author.mention} isn't good to drive :( <:thepip:850738731274207262>🌿💥👪🚔🚨")
+
 @client.command(name="whoami")
 async def whoami(ctx) :
     await ctx.send(f"You are {ctx.message.author.mention}")
@@ -34,6 +33,5 @@ async def whoami(ctx) :
 @client.command()
 async def clear(ctx, amount=3) :
     await ctx.channel.purge(limit=amount)
-
 
 client.run(token)
