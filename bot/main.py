@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import os
+from discord.utils import get
 
 import random
 from random import choice
@@ -9,9 +10,18 @@ client = commands.Bot(command_prefix=".")
 token = os.getenv("DISCORD_BOT_TOKEN")
 
 @client.event
-async def on_ready() :
-    await client.change_presence(activity = discord.Game("GTDB | DM .help"))
-    print("I am online")
+async def on_message(message):
+    # we do not want the client to reply to itself
+    if message.author == client.user:
+        return
+    if 'pip' in message.content:
+        emoji = get(client.get_all_emojis(), name='thepip')
+        await client.add_reaction(message, emoji)
+
+@client.event
+async def on_message(message):
+    if message.content.find('pip'):
+        await message.channel.send('Hello!')
 
 @client.command(brief="Ping the bot",)
 async def ping(ctx) :
