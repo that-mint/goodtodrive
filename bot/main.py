@@ -18,7 +18,7 @@ async def on_message(message):
     # we do not want the client to reply to itself
     if message.author == client.user:
         return
-    if "PIP" in message.content or "pip" in message.content:
+    elif: "PIP" in message.content or "pip" in message.content:
         emoji = client.get_emoji(850738731274207262)
         await message.add_reaction(message, emoji)
     else:
