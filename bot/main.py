@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import os
+import re
 
 import random
 from random import choice
@@ -18,7 +19,7 @@ async def on_message(message):
     # we do not want the client to reply to itself
     if message.author == client.user:
         return
-    elif "PIP" in message.content or "pip" in message.content:
+    elif re.search("(?i)\bpip\b", message.content)
         emoji = client.get_emoji(850738731274207262)
         await message.add_reaction(emoji)
     else:
