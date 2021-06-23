@@ -22,6 +22,9 @@ async def on_message(message):
     elif re.search(r"(?i)\bpip\b", message.content):
         emoji = client.get_emoji(850738731274207262)
         await message.add_reaction(emoji)
+    elif re.search(r"(?i)\bpipe\b", message.content):
+        emoji = client.get_emoji(850738731274207262)
+        await message.add_reaction(emoji)
     else:
         await client.process_commands(message)
 
