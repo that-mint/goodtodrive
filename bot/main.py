@@ -50,11 +50,11 @@ async def on_reaction_add(reaction, user):
 
 # Command block, relatively self explanatory
 @client.command(brief="Ping the bot",)
-async def ping(ctx) :
+async def ping(ctx):
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 4))}")
 
 @client.command(brief="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
-async def goodtodrive(ctx) :
+async def goodtodrive(ctx):
     determine_flip = [1, 0]
     if random.choice(determine_flip) == 1:
         await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️")
@@ -63,15 +63,15 @@ async def goodtodrive(ctx) :
         await ctx.send(f" {ctx.message.author.mention} isn't good to drive :( <:thepip:850738731274207262>🌿💥👪🚔🚨")
 
 @client.command(brief="Mentions the user who used the command", name="whoami")
-async def whoami(ctx) :
+async def whoami(ctx):
     await ctx.send(f"You are {ctx.message.author.mention}")
 
 @client.command(brief="ADMIN: Clears the chat", name="clear")
-async def clear(ctx, amount=2) :
+async def clear(ctx, amount=2):
     await ctx.channel.purge(limit=amount)
 
 @client.command(brief="Links the source of the bot", name="source")
-async def source(ctx) :
+async def source(ctx):
     await ctx.send(f" {ctx.message.author.mention} https://github.com/that-mint/goodtodrive")
 
 client.run(token)
