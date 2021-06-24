@@ -15,12 +15,10 @@ async def on_ready():
 
 # Auto add reactions when a certain word is said
 # uses REGEX to check if its own word
-# skips if the message is said by the bot itself
-# due to how on_message works, requires on every message check
-# if it doesn't match, it runs the commands as usual. Can also make
+# skips if the message is said by the bot itself. Can also make
 # commands with the same name as the search, as the regex doesn't match
-@client.event
-async def on_message(message):
+@client.listen('on_message')
+async def whatever_you_want_to_call_it(message):
     if message.author == client.user:
         return
     elif re.search(r"(?i)\bpip\b", message.content):
