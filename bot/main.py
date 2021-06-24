@@ -16,7 +16,8 @@ async def on_ready():
 # Auto add reactions when a certain word is said
 # uses REGEX to check if its own word
 # skips if the message is said by the bot itself. Can also make
-# commands with the same name as the search, as the regex doesn't match
+# commands with the same name as the search, as the regex doesn't match.
+# Can be expanded upon to add any emoji to any word, just add a new elif.
 @client.listen('on_message')
 async def autoreact(message):
     if message.author == client.user:
