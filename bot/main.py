@@ -18,7 +18,7 @@ async def on_ready():
 # skips if the message is said by the bot itself. Can also make
 # commands with the same name as the search, as the regex doesn't match
 @client.listen('on_message')
-async def whatever_you_want_to_call_it(message):
+async def autoreact(message):
     if message.author == client.user:
         return
     elif re.search(r"(?i)\bpip\b", message.content):
