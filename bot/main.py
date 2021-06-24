@@ -13,9 +13,14 @@ async def on_ready():
     await client.change_presence(activity = discord.Game("GTDB | DM .help"))
     print("I am online")
 
+# Auto add reactions when a certain word is said
+# uses REGEX to check if its own word
+# skips if the message is said by the bot itself
+# due to how on_message works, requires on every message check
+# if it doesn't match, it runs the commands as usual. Can also make
+# commands with the same name as the search, as the regex doesn't match
 @client.event
 async def on_message(message):
-    # we do not want the client to reply to itself
     if message.author == client.user:
         return
     elif re.search(r"(?i)\bpip\b", message.content):
@@ -27,14 +32,23 @@ async def on_message(message):
     else:
         await client.process_commands(message)
 
+
+# Auto add reactions to preexisting reactions
+# Checks wether the reaction was added by the bot itself and skips
+# Can work for any emote/emoji, just add it as its new client.get_emoji
 @client.event
 async def on_reaction_add(reaction, user):
     pip = client.get_emoji(850738731274207262)
+    omegalul = client.get_emoji(365763491660824576)
     if user == client.user:
         return
     elif reaction.emoji == pip:
         await reaction.message.add_reaction(pip)
+    elif reaction.emoji == omegalul:
+        await reaction.message.add_reaction(omegalul)
 
+
+# Command block, relatively self explanatory
 @client.command(brief="Ping the bot",)
 async def ping(ctx) :
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 4))}")
