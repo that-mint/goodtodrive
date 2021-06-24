@@ -27,8 +27,6 @@ async def whatever_you_want_to_call_it(message):
     elif re.search(r"(?i)\bpipe\b", message.content):
         emoji = client.get_emoji(850738731274207262)
         await message.add_reaction(emoji)
-    else:
-        await client.process_commands(message)
 
 
 # Auto add reactions to preexisting reactions
