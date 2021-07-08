@@ -54,6 +54,7 @@ async def ping(ctx):
 async def goodtodrive(ctx):
     pip = client.get_emoji(850738731274207262)
     determine_flip = [1, 0]
+    await ctx.message.delete()
     if random.choice(determine_flip) == 1:
        m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️")
        await m.add_reaction(pip)
