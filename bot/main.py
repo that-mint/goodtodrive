@@ -17,7 +17,8 @@ sqluser = os.getenv("MYSQL_USER")
 sqlpass = os.getenv("MYSQL_PASS")
 sqldb = os.getenv("MYSQL_DB")
 
-if sqlenabled:
+
+def add_data(nick, command):
     connection = database.connect(
         user=sqluser,
         password=sqlpass,
@@ -26,20 +27,28 @@ if sqlenabled:
         database=sqldb
     )
     cursor = connection.cursor(buffered=True)
-
-def add_data(nick, command):
     try:
         statement = "INSERT INTO points (nick,command) VALUES (%s, %s)"
         data = (nick, command)
         cursor.execute(statement, data)
         connection.commit()
         print(f"Successfully added entry to database with variables {nick} & {command}")
+        connection.close()
     except database.Error as e:
         print(f"Error adding entry to database: {e}")
+        connection.close()
 
 cmdcount = 0
 
 def get_data(command,nick):
+    connection = database.connect(
+        user=sqluser,
+        password=sqlpass,
+        host=sqlhost,
+        port=3306,
+        database=sqldb
+    )
+    cursor = connection.cursor(buffered=True)
     try:
         sql = "SELECT COUNT(*) FROM points WHERE command = %s AND nick = %s"
         args = (command, nick)
@@ -48,8 +57,10 @@ def get_data(command,nick):
         number_of_rows = result[0]
         global cmdcount
         cmdcount = number_of_rows
+        connection.close()
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
+        connection.close()
 
 @client.event
 async def on_ready():
