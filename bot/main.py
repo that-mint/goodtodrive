@@ -33,7 +33,7 @@ def add_data(nick, command):
         data = (nick, command)
         cursor.execute(statement, data)
         connection.commit()
-        print("Successfully added entry to database")
+        print(f"Successfully added entry to database with variables {nick} & {command}")
     except database.Error as e:
         print(f"Error adding entry to database: {e}")
 
