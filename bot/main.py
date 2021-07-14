@@ -116,3 +116,4 @@ async def source(ctx):
         add_data(ctx.message.author.name, "source")
 
 client.run(token)
+connection.close()
