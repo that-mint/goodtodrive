@@ -39,9 +39,7 @@ def add_data(nick, command):
 
 def get_data(command,nick):
     try:
-      number_of_rows  = "SELECT COUNT(*) FROM points WHERE command = %s AND nick = %s"
-      data = (command,nick)
-      cursor.execute(number_of_rows, data)
+      number_of_rows = cursor.execute(f"SELECT COUNT(*) FROM points WHERE command = {command} AND nick = {nick}"
       global count
       count = number_of_rows
     except database.Error as e:
