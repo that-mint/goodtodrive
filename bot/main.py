@@ -37,12 +37,13 @@ def add_data(nick, command):
     except database.Error as e:
         print(f"Error adding entry to database: {e}")
 
-def get_data(command,nick):
+def get_data(command,nick,count):
     try:
       number_of_rows  = "SELECT COUNT(*) FROM points WHERE command = %s AND nick = %s"
       data = (command,nick)
       cursor.execute(number_of_rows, data)
-      return number_of_rows
+      count = number_of_rows
+      return count
     except database.Error as e:
       print(f"Error retrieving entry from database: {e}")
 
@@ -98,7 +99,7 @@ async def goodtodrive(ctx):
     await ctx.message.delete()
     if random.choice(determine_flip) == 1:
         get_data("gtdpass",ctx.message.author.name)
-        m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️ Count: {number_of_rows}")
+        m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️ Count: {count}")
         await m.add_reaction(pip)
         if sqlenabled:
             add_data(ctx.message.author.name, "gtdpass")
