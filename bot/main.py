@@ -4,9 +4,35 @@ import os
 import re
 import random
 from random import choice
+import sys
+import mariadb
 
 client = commands.Bot(command_prefix=".")
 token = os.getenv("DISCORD_BOT_TOKEN")
+
+# Comment this to false to disable SQL/points connectivity.
+sqlenabled = True
+
+sqlhost = os.getenv("MYSQL_HOST")
+sqluser = os.getenv("MYSQL_USER")
+sqlpass = os.getenv("MYSQL_PASS")
+sqldb = os.getenv("MYSQL_DB")
+
+
+
+if sqlenabled:
+    try:
+        conn = mariadb.connect(
+            user=sqluser,
+            password=sqlpass,
+            host=sqlhost,
+            port=3306,
+            database=sqldb
+        )
+    except mariadb.Error as e:
+    print(f"Error connecting to MariaDB Platform: {e}")
+    sys.exit(1)
+    cur = conn.cursor()
 
 @client.event
 async def on_ready():
@@ -49,6 +75,13 @@ async def on_reaction_add(reaction, user):
 @client.command(brief="Ping the bot",)
 async def ping(ctx):
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 4))}")
+    if sqlenabled:
+        cur = conn.cursor()
+        try: 
+            cur.execute("INSERT INTO points (nick,command) VALUES (?, ?)", (ctx.message.author.name,"ping")) 
+        except mariadb.Error as e: 
+            print(f"Error: {e}")
+
 
 @client.command(brief="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
 async def goodtodrive(ctx):
