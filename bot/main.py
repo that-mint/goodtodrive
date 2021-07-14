@@ -34,7 +34,6 @@ def add_data(nick, command):
         cursor.execute(statement, data)
         connection.commit()
         print(f"Successfully added entry to database with variables {nick} & {command}")
-        connection.close()
     except database.Error as e:
         print(f"Error adding entry to database: {e}")
 
@@ -49,7 +48,6 @@ def get_data(command,nick):
         number_of_rows = result[0]
         global cmdcount
         cmdcount = number_of_rows
-        connection.close()
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
 
@@ -132,3 +130,4 @@ async def source(ctx):
         add_data(ctx.message.author.name, "source")
 
 client.run(token)
+connection.close()
