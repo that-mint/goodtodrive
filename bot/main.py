@@ -25,7 +25,7 @@ if sqlenabled:
         port=3306,
         database=sqldb
     )
-    cursor = connection.cursor()
+    cursor = connection.cursor(buffered=True)
 
 def add_data(nick, command):
     try:
