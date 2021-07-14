@@ -45,7 +45,7 @@ def get_data(command,nick):
         args = (command, nick)
         cursor.execute(sql, args)
         result=cursor.fetchone()
-        number_of_rows = =result[0]
+        number_of_rows = result[0]
         global cmdcount
         cmdcount = number_of_rows
     except database.Error as e:
