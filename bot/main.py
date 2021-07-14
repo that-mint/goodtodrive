@@ -103,15 +103,16 @@ async def goodtodrive(ctx):
     await ctx.message.delete()
     if random.choice(determine_flip) == 1:
         get_data("gtdpass",ctx.message.author.name)
-        m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️ Count: {cmdcount}")
+        m = await ctx.send(f"{ctx.message.author.mention} is good to drive, they have saved {cmdcount} families! <:thepip:850738731274207262>🌿🏎️")
         await m.add_reaction(pip)
         if sqlenabled:
             add_data(ctx.message.author.name, "gtdpass")
 
     else:
-       m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive :( <:thepip:850738731274207262>🌿💥👪🚔🚨")
-       await m.add_reaction(pip)
-       if sqlenabled:
+        get_data("gtdfail",ctx.message.author.name)
+        m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive, they have killed {cmdcount} families <:thepip:850738731274207262>🌿💥👪🚔🚨")
+        await m.add_reaction(pip)
+        if sqlenabled:
             add_data(ctx.message.author.name, "gtdfail")
 
 @client.command(brief="Mentions the user who used the command", name="whoami")
