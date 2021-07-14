@@ -42,8 +42,8 @@ def get_data(command,nick):
       number_of_rows  = "SELECT COUNT(*) FROM points WHERE command = %s AND nick = %s"
       data = (command,nick)
       cursor.execute(number_of_rows, data)
-      count = number_of_rows
       global count
+      count = number_of_rows
     except database.Error as e:
       print(f"Error retrieving entry from database: {e}")
 
