@@ -44,7 +44,8 @@ def get_data(command,nick):
         sql = "SELECT COUNT(*) FROM points WHERE command = %s AND nick = %s"
         args = (command, nick)
         cursor.execute(sql, args)
-        number_of_rows = cursor.fetchall()
+        result=cursor.fetchone()
+        number_of_rows = =result[0]
         global cmdcount
         cmdcount = number_of_rows
     except database.Error as e:
