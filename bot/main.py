@@ -9,7 +9,7 @@ import mysql.connector as database
 client = commands.Bot(command_prefix=".")
 token = os.getenv("DISCORD_BOT_TOKEN")
 
-# Comment this to false to disable SQL/points connectivity.
+# Comment this to false to disable SQL/points connectivity. Currently broken if false
 sqlenabled = True
 
 sqlhost = os.getenv("MYSQL_HOST")
