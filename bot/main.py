@@ -20,17 +20,13 @@ sqldb = os.getenv("MYSQL_DB")
 
 
 if sqlenabled:
-    try:
-        connection = database.connect(
-            user=sqluser,
-            password=sqlpass,
-            host=sqlhost,
-            port=3306,
-            database=sqldb
-        )
-    except database.Error as e:
-    print(f"Error connecting to MariaDB Platform: {e}")
-    sys.exit(1)
+    connection = database.connect(
+        user=sqluser,
+        password=sqlpass,
+        host=sqlhost,
+        port=3306,
+        database=sqldb
+    )
     cursor = connection.cursor()
 
 def add_data(nick, command):
