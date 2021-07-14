@@ -112,17 +112,18 @@ async def goodtodrive(ctx):
     pip = client.get_emoji(850738731274207262)
     determine_flip = [1, 0]
     await ctx.message.delete()
-    if random.choice(determine_flip) == 1:
-        add_data(ctx.message.author.name, "gtdpass")
-        get_data("gtdpass",ctx.message.author.name)
-        m = await ctx.send(f"{ctx.message.author.mention} is good to drive, they have saved {cmdcount} families! <:thepip:850738731274207262>🌿🏎️")
-        await m.add_reaction(pip)
+    async with ctx.typing():
+        if random.choice(determine_flip) == 1:
+            add_data(ctx.message.author.name, "gtdpass")
+            get_data("gtdpass",ctx.message.author.name)
+            m = await ctx.send(f"{ctx.message.author.mention} is good to drive, they have saved {cmdcount} families! <:thepip:850738731274207262>🌿🏎️")
+            await m.add_reaction(pip)
 
-    else:
-        add_data(ctx.message.author.name, "gtdfail")
-        get_data("gtdfail",ctx.message.author.name)
-        m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive, they have killed {cmdcount} families <:thepip:850738731274207262>🌿💥👪🚔🚨")
-        await m.add_reaction(pip)
+        else:
+            add_data(ctx.message.author.name, "gtdfail")
+            get_data("gtdfail",ctx.message.author.name)
+            m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive, they have killed {cmdcount} families <:thepip:850738731274207262>🌿💥👪🚔🚨")
+            await m.add_reaction(pip)
 
 @client.command(brief="Mentions the user who used the command", name="whoami")
 async def whoami(ctx):
