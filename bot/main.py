@@ -42,7 +42,6 @@ cmdcount = 0
 def get_data(command,nick):
     try:
         number_of_rows = cursor.execute(f"SELECT COUNT(*) FROM points WHERE command = {command} AND nick = {nick}"
-        global cmdcount
         cmdcount = number_of_rows
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
@@ -99,7 +98,7 @@ async def goodtodrive(ctx):
     await ctx.message.delete()
     if random.choice(determine_flip) == 1:
         get_data("gtdpass",ctx.message.author.name)
-        m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️ Count: {count}")
+        m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️ Count: {cmdcount}")
         await m.add_reaction(pip)
         if sqlenabled:
             add_data(ctx.message.author.name, "gtdpass")
