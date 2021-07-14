@@ -17,8 +17,6 @@ sqluser = os.getenv("MYSQL_USER")
 sqlpass = os.getenv("MYSQL_PASS")
 sqldb = os.getenv("MYSQL_DB")
 
-
-
 if sqlenabled:
     connection = database.connect(
         user=sqluser,
@@ -38,6 +36,15 @@ def add_data(nick, command):
         print("Successfully added entry to database")
     except database.Error as e:
         print(f"Error adding entry to database: {e}")
+
+def get_data(command,nick):
+    try:
+      number_of_rows  = "SELECT COUNT(*) FROM points WHERE command = %s AND nick = %s"
+      data = (command,nick)
+      cursor.execute(number_of_rows, data)
+      return number_of_rows
+    except database.Error as e:
+      print(f"Error retrieving entry from database: {e}")
 
 @client.event
 async def on_ready():
@@ -86,18 +93,21 @@ async def ping(ctx):
 
 @client.command(brief="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
 async def goodtodrive(ctx):
-    if sqlenabled:
-        add_data(ctx.message.author.name, "gtd")
     pip = client.get_emoji(850738731274207262)
     determine_flip = [1, 0]
     await ctx.message.delete()
     if random.choice(determine_flip) == 1:
-       m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️")
-       await m.add_reaction(pip)
+        get_data("gtdpass",ctx.message.author.name)
+        m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️ Count: {number_of_rows}")
+        await m.add_reaction(pip)
+        if sqlenabled:
+            add_data(ctx.message.author.name, "gtdpass")
 
     else:
        m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive :( <:thepip:850738731274207262>🌿💥👪🚔🚨")
        await m.add_reaction(pip)
+       if sqlenabled:
+            add_data(ctx.message.author.name, "gtdfail")
 
 @client.command(brief="Mentions the user who used the command", name="whoami")
 async def whoami(ctx):
