@@ -39,11 +39,11 @@ def add_data(nick, command):
 
 def get_data(command,nick):
     try:
-      number_of_rows = cursor.execute(f"SELECT COUNT(*) FROM points WHERE command = {command} AND nick = {nick}"
-      global count
-      count = number_of_rows
+        number_of_rows = cursor.execute(f"SELECT COUNT(*) FROM points WHERE command = {command} AND nick = {nick}"
+        global count
+        count = number_of_rows
     except database.Error as e:
-      print(f"Error retrieving entry from database: {e}")
+        print(f"Error retrieving entry from database: {e}")
 
 @client.event
 async def on_ready():
