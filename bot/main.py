@@ -41,7 +41,7 @@ cmdcount = 0
 
 def get_data(command,nick):
     try:
-        number_of_rows = cursor.execute(f"SELECT COUNT(*) FROM points WHERE command = {command} AND nick = {nick}")
+        number_of_rows = cursor.execute(f"SELECT COUNT(*) FROM points WHERE command = '{command}' AND nick = '{nick}'")
         global cmdcount
         cmdcount = number_of_rows
     except database.Error as e:
