@@ -4,8 +4,7 @@ import os
 import re
 import random
 from random import choice
-import sys
-import mariadb
+import mysql.connector as database
 
 client = commands.Bot(command_prefix=".")
 token = os.getenv("DISCORD_BOT_TOKEN")
@@ -22,17 +21,27 @@ sqldb = os.getenv("MYSQL_DB")
 
 if sqlenabled:
     try:
-        conn = mariadb.connect(
+        connection = database.connect(
             user=sqluser,
             password=sqlpass,
             host=sqlhost,
             port=3306,
             database=sqldb
         )
-    except mariadb.Error as e:
+    except database.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}")
     sys.exit(1)
-    cur = conn.cursor()
+    cursor = connection.cursor()
+
+def add_data(nick, command):
+    try:
+        statement = "INSERT INTO points (nick,command) VALUES (%s, %s)"
+        data = (nick, command)
+        cursor.execute(statement, data)
+        connection.commit()
+        print("Successfully added entry to database")
+    except database.Error as e:
+        print(f"Error adding entry to database: {e}")
 
 @client.event
 async def on_ready():
@@ -76,15 +85,13 @@ async def on_reaction_add(reaction, user):
 async def ping(ctx):
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 4))}")
     if sqlenabled:
-        cur = conn.cursor()
-        try: 
-            cur.execute("INSERT INTO points (nick,command) VALUES (?, ?)", (ctx.message.author.name,"ping")) 
-        except mariadb.Error as e: 
-            print(f"Error: {e}")
+        add_data(ctx.message.author.name, "ping")
 
 
 @client.command(brief="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
 async def goodtodrive(ctx):
+    if sqlenabled:
+        add_data(ctx.message.author.name, "gtd")
     pip = client.get_emoji(850738731274207262)
     determine_flip = [1, 0]
     await ctx.message.delete()
@@ -99,6 +106,8 @@ async def goodtodrive(ctx):
 @client.command(brief="Mentions the user who used the command", name="whoami")
 async def whoami(ctx):
     await ctx.send(f"You are {ctx.message.author.mention}")
+    if sqlenabled:
+        add_data(ctx.message.author.name, "mention")
 
 @client.command(brief="ADMIN: Clears the chat", name="clear")
 async def clear(ctx, amount=2):
@@ -107,5 +116,7 @@ async def clear(ctx, amount=2):
 @client.command(brief="Links the source of the bot", name="source")
 async def source(ctx):
     await ctx.send(f" {ctx.message.author.mention} https://github.com/that-mint/goodtodrive")
+    if sqlenabled:
+        add_data(ctx.message.author.name, "source")
 
 client.run(token)
