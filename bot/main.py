@@ -98,7 +98,7 @@ async def goodtodrive(ctx):
     determine_flip = [1, 0]
     await ctx.message.delete()
     if random.choice(determine_flip) == 1:
-        get_data("gtdpass",ctx.message.author.name)
+        get_data("gtdpass",ctx.message.author.name,0)
         m = await ctx.send(f"{ctx.message.author.mention} is good to drive! <:thepip:850738731274207262>🌿🏎️ Count: {count}")
         await m.add_reaction(pip)
         if sqlenabled:
