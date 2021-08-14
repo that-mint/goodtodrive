@@ -181,8 +181,7 @@ async def dejabeug(ctx):
         dejatotal = CMDCOUNT
         get_data("dejabeug",ctx.message.author.name)
         usertotal = CMDCOUNT
-        ordinal(usertotal) = usertotal
-        m = await ctx.send(f"{ctx.message.author.mention} has had deja beug, this is their {usertotal} time! | {dejatotal} total deja beugs! <:thebeug:862251320264884225>")
+        m = await ctx.send(f"{ctx.message.author.mention} has had deja beug, this is their {ordinal(usertotal)} time! | {dejatotal} total deja beugs! <:thebeug:862251320264884225>")
         await m.add_reaction(beug)
 
 
