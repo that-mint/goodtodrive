@@ -5,17 +5,18 @@ import re
 import random
 from random import choice
 import mysql.connector as database
+from decouple import config
 
 client = commands.Bot(command_prefix=".")
-token = os.getenv("DISCORD_BOT_TOKEN")
+token = config("DISCORD_BOT_TOKEN")
 
 # Comment this to false to disable SQL/points connectivity. Currently broken if false
 sqlenabled = True
 
-sqlhost = os.getenv("MYSQL_HOST")
-sqluser = os.getenv("MYSQL_USER")
-sqlpass = os.getenv("MYSQL_PASS")
-sqldb = os.getenv("MYSQL_DB")
+sqlhost = config("MYSQL_HOST")
+sqluser = config("MYSQL_USER")
+sqlpass = config("MYSQL_PASS")
+sqldb = config("MYSQL_DB")
 
 
 def add_data(nick, command):
@@ -38,7 +39,7 @@ def add_data(nick, command):
         print(f"Error adding entry to database: {e}")
         connection.close()
 
-cmdcount = 0
+CMDCOUNT = 0
 
 def get_data(command,nick):
     connection = database.connect(
@@ -55,12 +56,42 @@ def get_data(command,nick):
         cursor.execute(sql, args)
         result=cursor.fetchone()
         number_of_rows = result[0]
-        global cmdcount
-        cmdcount = number_of_rows
+        global CMDCOUNT
+        CMDCOUNT = number_of_rows
         connection.close()
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
         connection.close()
+
+def get_data_command(command):
+    connection = database.connect(
+        user=sqluser,
+        password=sqlpass,
+        host=sqlhost,
+        port=3306,
+        database=sqldb
+    )
+    cursor = connection.cursor(buffered=True)
+    try:
+        sql = "SELECT COUNT(*) FROM points WHERE command = %s"
+        args = (command,)
+        cursor.execute(sql, args)
+        result=cursor.fetchone()
+        number_of_rows = result[0]
+        global CMDCOUNT
+        CMDCOUNT = number_of_rows
+        connection.close()
+    except database.Error as e:
+        print(f"Error retrieving entry from database: {e}")
+        connection.close()
+
+def ordinal(n):
+  s = ('th', 'st', 'nd', 'rd') + ('th',)*10
+  v = n%100
+  if v > 13:
+    return f'{n}{s[v%10]}'
+  else:
+    return f'{n}{s[v]}'
 
 @client.event
 async def on_ready():
@@ -106,6 +137,22 @@ async def ping(ctx):
     if sqlenabled:
         add_data(ctx.message.author.name, "ping")
 
+@client.command(brief="Good to drive statistics",)
+async def gtdstats(ctx):
+    add_data(ctx.message.author.name, "gtdstats")
+    async with ctx.typing():
+        get_data_command("gtdpass")
+        passtotal = CMDCOUNT
+        get_data_command("gtdfail")
+        failtotal = CMDCOUNT
+        await ctx.message.delete()
+        embed=discord.Embed(title="Good To Drive Statistics", description="How fried is the server?", color=0x66ffb0)
+        embed.set_author(name="Good to Drive", icon_url="https://i.imgur.com/c159g2g.png")
+        embed.add_field(name="Total Deaths:", value=passtotal, inline=False)
+        embed.add_field(name="Total Saves:", value=failtotal, inline=True)
+        embed.set_footer(text="Good to drive, boss.")
+        await ctx.send(embed=embed)
+
 
 @client.command(brief="Tests how good you are to drive", name="goodtodrive", aliases=["gtd"])
 async def goodtodrive(ctx):
@@ -116,14 +163,28 @@ async def goodtodrive(ctx):
         if random.choice(determine_flip) == 1:
             add_data(ctx.message.author.name, "gtdpass")
             get_data("gtdpass",ctx.message.author.name)
-            m = await ctx.send(f"{ctx.message.author.mention} is good to drive, they have saved {cmdcount} families! <:thepip:850738731274207262>🌿🏎️")
+            m = await ctx.send(f"{ctx.message.author.mention} is good to drive, they have saved {CMDCOUNT} families! <:thepip:850738731274207262>")
             await m.add_reaction(pip)
-
         else:
             add_data(ctx.message.author.name, "gtdfail")
             get_data("gtdfail",ctx.message.author.name)
-            m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive, they have killed {cmdcount} families <:thepip:850738731274207262>🌿💥👪🚔🚨")
+            m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive, they have killed {CMDCOUNT} families <:thepip:850738731274207262>")
             await m.add_reaction(pip)
+
+@client.command(brief="Tally the deja beug counter", name="dejabeug", aliases=["db"])
+async def dejabeug(ctx):
+    beug = client.get_emoji(862251320264884225)
+    await ctx.message.delete()
+    async with ctx.typing():
+        add_data(ctx.message.author.name, "dejabeug")
+        get_data_command("dejabeug")
+        dejatotal = CMDCOUNT
+        get_data("dejabeug",ctx.message.author.name)
+        usertotal = CMDCOUNT
+        ordinal(usertotal) = usertotal
+        m = await ctx.send(f"{ctx.message.author.mention} has had deja beug, this is their {usertotal} time! | {dejatotal} total deja beugs! <:thebeug:862251320264884225>")
+        await m.add_reaction(beug)
+
 
 @client.command(brief="Mentions the user who used the command", name="whoami")
 async def whoami(ctx):
@@ -142,4 +203,3 @@ async def source(ctx):
         add_data(ctx.message.author.name, "source")
 
 client.run(token)
-connection.close()
