@@ -92,6 +92,7 @@ def ordinal(n):
   else:
     return f'{n}{s[v]}'
 
+
 @client.event
 async def on_ready():
     await client.change_presence(activity = discord.Game("GTDB | DM .help"))
