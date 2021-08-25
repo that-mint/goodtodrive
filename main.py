@@ -39,7 +39,6 @@ def add_data(nick, command):
         print(f"Error adding entry to database: {e}")
         connection.close()
 
-CMDCOUNT = 0
 
 def get_data(command,nick):
     connection = database.connect(
@@ -51,16 +50,16 @@ def get_data(command,nick):
     )
     cursor = connection.cursor(buffered=True)
     try:
-        sql = "SELECT COUNT(*) FROM points WHERE command = %s AND nick = %s"
+        sql = "SELECT COUNT(*) FROM points WHERE nick = %s AND command = %s"
         args = (command, nick)
         cursor.execute(sql, args)
         result=cursor.fetchone()
         number_of_rows = result[0]
-        global CMDCOUNT
-        CMDCOUNT = number_of_rows
+        return number_of_rows
         connection.close()
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
+        return e
         connection.close()
 
 def get_data_command(command):
@@ -78,11 +77,11 @@ def get_data_command(command):
         cursor.execute(sql, args)
         result=cursor.fetchone()
         number_of_rows = result[0]
-        global CMDCOUNT
-        CMDCOUNT = number_of_rows
+        return number_of_rows
         connection.close()
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
+        return e
         connection.close()
 
 def ordinal(n):
@@ -141,15 +140,11 @@ async def ping(ctx):
 async def gtdstats(ctx):
     add_data(ctx.message.author.name, "gtdstats")
     async with ctx.typing():
-        get_data_command("gtdpass")
-        passtotal = CMDCOUNT
-        get_data_command("gtdfail")
-        failtotal = CMDCOUNT
         await ctx.message.delete()
         embed=discord.Embed(title="Good To Drive Statistics", description="How fried is the server?", color=0x66ffb0)
         embed.set_author(name="Good to Drive", icon_url="https://i.imgur.com/c159g2g.png")
-        embed.add_field(name="Total Deaths:", value=passtotal, inline=False)
-        embed.add_field(name="Total Saves:", value=failtotal, inline=True)
+        embed.add_field(name="Total Deaths:", value= get_data_command("gtdfail"), inline=False)
+        embed.add_field(name="Total Saves:", value=get_data_command("gtdpass"), inline=True)
         embed.set_footer(text="Good to drive, boss.")
         await ctx.send(embed=embed)
 
@@ -162,13 +157,11 @@ async def goodtodrive(ctx):
     async with ctx.typing():
         if random.choice(determine_flip) == 1:
             add_data(ctx.message.author.name, "gtdpass")
-            get_data("gtdpass",ctx.message.author.name)
-            m = await ctx.send(f"{ctx.message.author.mention} is good to drive, they have saved {CMDCOUNT} families! <:thepip:850738731274207262>")
+            m = await ctx.send(f"{ctx.message.author.mention} is good to drive, they have saved {get_data("gtdpass",ctx.message.author.name)} families! <:thepip:850738731274207262>")
             await m.add_reaction(pip)
         else:
             add_data(ctx.message.author.name, "gtdfail")
-            get_data("gtdfail",ctx.message.author.name)
-            m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive, they have killed {CMDCOUNT} families <:thepip:850738731274207262>")
+            m = await ctx.send(f" {ctx.message.author.mention} isn't good to drive, they have killed {get_data("gtdfail",ctx.message.author.name)} families <:thepip:850738731274207262>")
             await m.add_reaction(pip)
 
 @client.command(brief="Tally the deja beug counter", name="dejabeug", aliases=["db"])
@@ -177,11 +170,7 @@ async def dejabeug(ctx):
     await ctx.message.delete()
     async with ctx.typing():
         add_data(ctx.message.author.name, "dejabeug")
-        get_data_command("dejabeug")
-        dejatotal = CMDCOUNT
-        get_data("dejabeug",ctx.message.author.name)
-        usertotal = CMDCOUNT
-        m = await ctx.send(f"{ctx.message.author.mention} has had deja beug, this is their {ordinal(usertotal)} time! | {dejatotal} total deja beugs! <:thebeug:862251320264884225>")
+        m = await ctx.send(f"{ctx.message.author.mention} has had deja beug, this is their {ordinal(get_data("dejabeug",ctx.message.author.name))} time! | {get_data_command("dejabeug")} total deja beugs! <:thebeug:862251320264884225>")
         await m.add_reaction(beug)
 
 
