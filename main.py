@@ -51,7 +51,7 @@ def get_data(command,nick):
     cursor = connection.cursor(buffered=True)
     try:
         sql = "SELECT COUNT(*) FROM points WHERE nick = %s AND command = %s"
-        args = (command, nick)
+        args = (nick, command)
         cursor.execute(sql, args)
         result=cursor.fetchone()
         number_of_rows = result[0]
