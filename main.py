@@ -18,6 +18,8 @@ sqluser = config("MYSQL_USER")
 sqlpass = config("MYSQL_PASS")
 sqldb = config("MYSQL_DB")
 
+blockedusers = ["716122285399998524"]
+
 
 def add_data(nick, command):
     connection = database.connect(
@@ -107,6 +109,8 @@ async def on_ready():
 async def autoreact(message):
     if message.author == client.user:
         return
+    elif message.author.discriminator in blockedusers:
+        return
     elif re.search(r"(?i)\bpip\b", message.content):
         emoji = client.get_emoji(850738731274207262)
         await message.add_reaction(emoji)
@@ -123,6 +127,8 @@ async def on_reaction_add(reaction, user):
     pip = client.get_emoji(850738731274207262)
     omegalul = client.get_emoji(365763491660824576)
     if user == client.user:
+        return
+    elif user.discriminator in blockedusers:
         return
     elif reaction.emoji == pip:
         await reaction.message.add_reaction(pip)
