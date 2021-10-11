@@ -57,12 +57,13 @@ def get_data(command,nick):
         cursor.execute(sql, args)
         result=cursor.fetchone()
         number_of_rows = result[0]
-        return number_of_rows
         connection.close()
+        return number_of_rows
+        
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
-        return e
         connection.close()
+        return e
 
 def get_data_command(command):
     connection = database.connect(
@@ -79,12 +80,33 @@ def get_data_command(command):
         cursor.execute(sql, args)
         result=cursor.fetchone()
         number_of_rows = result[0]
-        return number_of_rows
         connection.close()
+        return number_of_rows
     except database.Error as e:
         print(f"Error retrieving entry from database: {e}")
-        return e
         connection.close()
+        return e
+
+def get_data_dbleaderboard():
+    connection = database.connect(
+        user=sqluser,
+        password=sqlpass,
+        host=sqlhost,
+        port=3306,
+        database=sqldb
+    )
+    cursor = connection.cursor(buffered=True)
+    try:
+        sql = "SELECT nick, COUNT(command) FROM points WHERE command LIKE 'dejabeug' GROUP BY nick ORDER BY COUNT(command) DESC LIMIT 5"
+        cursor.execute(sql)
+        records = cursor.fetchall()
+        connection.close()
+        return records
+    except database.Error as e:
+        print(f"Error retrieving entry from database: {e}")
+        connection.close()
+        return e
+        
 
 def ordinal(n):
   s = ('th', 'st', 'nd', 'rd') + ('th',)*10
@@ -179,6 +201,18 @@ async def dejabeug(ctx):
         add_data(ctx.message.author.name, "dejabeug")
         m = await ctx.send(f"{ctx.message.author.mention} has had deja beug, this is their {ordinal(get_data('dejabeug',ctx.message.author.name))} time! | {get_data_command('dejabeug')} total deja beugs! <:thebeug:862251320264884225>")
         await m.add_reaction(beug)
+
+@client.command(brief="deja beug leaderboard", name="dbl")
+async def dbl(ctx):
+    async with ctx.typing():
+        await ctx.message.delete()
+        add_data(ctx.message.author.name, "dbl")
+        alldata = get_data_dbleaderboard()
+        embed=discord.Embed(title="Deja Beug Leaderboard (Top 5)", description="Who has the most deja beugs!", color=0x66ffb0)
+        embed.set_author(name="Good to Drive", icon_url="https://i.imgur.com/c159g2g.png")
+        for row in alldata:
+            embed.add_field(name=row[0], value=row[1], inline=False)
+        await ctx.send(embed=embed)
 
 
 @client.command(brief="Mentions the user who used the command", name="whoami")
