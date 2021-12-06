@@ -14,7 +14,9 @@ token = config("DISCORD_BOT_TOKEN")
 # Comment this to false to disable SQL/points connectivity. Currently broken if false
 sqlenabled = True
 
-blockedusers = ["716122285399998524"]
+blockedchannels = [887901232075788319]
+
+
 
 @client.event
 async def on_ready():
@@ -30,7 +32,7 @@ async def on_ready():
 async def autoreact(message):
     if message.author == client.user:
         return
-    elif message.author.discriminator in blockedusers:
+    elif message.channel.id in blockedchannels:
         return
     elif re.search(r"(?i)\bpip\b", message.content):
         emoji = client.get_emoji(850738731274207262)
@@ -49,7 +51,7 @@ async def on_reaction_add(reaction, user):
     omegalul = client.get_emoji(365763491660824576)
     if user == client.user:
         return
-    elif user.discriminator in blockedusers:
+    elif reaction.message.channel.id in blockedchannels:
         return
     elif reaction.emoji == pip:
         await reaction.message.add_reaction(pip)
