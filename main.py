@@ -49,7 +49,7 @@ async def autoreact(message):
 async def on_message(message):
     if message.channel.id == 928139023875211315:
         await asyncio.sleep(5)
-        await message.delete(message)
+        await message.delete()
 
 
 
