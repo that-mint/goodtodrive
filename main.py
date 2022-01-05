@@ -3,6 +3,7 @@ from discord.ext import commands
 import os
 import re
 import random
+import asyncio
 from random import choice
 import mysql.connector as database
 import sql
@@ -40,6 +41,16 @@ async def autoreact(message):
     elif re.search(r"(?i)\bpipe\b", message.content):
         emoji = client.get_emoji(850738731274207262)
         await message.add_reaction(emoji)
+
+
+# Delete messages in the roles channel after a delay.
+# Used with Auttaja for self-serviced roles.
+@client.event
+async def on_message(message):
+    if message.channel.id == 928139023875211315:
+        await asyncio.sleep(5)
+        await message.delete(message)
+
 
 
 # Auto add reactions to preexisting reactions
@@ -133,3 +144,4 @@ async def source(ctx):
         sql.add_data(ctx.message.author.name, "source")
 
 client.run(token)
+
