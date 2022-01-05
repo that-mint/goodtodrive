@@ -49,6 +49,8 @@ async def autoreact(message):
 async def on_message(message):
     if message.channel.id == 928139023875211315:
         await asyncio.sleep(5)
+        print("Deleted message in roles channel:")
+        print(message.content)
         await message.delete()
 
 
