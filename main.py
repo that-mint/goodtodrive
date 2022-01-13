@@ -24,8 +24,6 @@ async def on_ready():
     await client.change_presence(activity = discord.Game("GTDB | DM .help"))
     print("I am online")
 
-# Auto add reactions when a certain word is said
-# uses REGEX to check if its own word
 # skips if the message is said by the bot itself. Can also make
 # commands with the same name as the search, as the regex doesn't match.
 # Can be expanded upon to add any emoji to any word, just add a new elif.
@@ -46,12 +44,12 @@ async def autoreact(message):
 # Delete messages in the roles channel after a delay.
 # Used with Auttaja for self-serviced roles.
 @client.event
-async def on_message(message):
-    if message.channel.id == 928139023875211315:
-        await asyncio.sleep(5)
-        print("Deleted message in roles channel:")
-        print(message.content)
-        await message.delete()
+#async def on_message(message):
+    #if message.channel.id == 928139023875211315:
+        #await asyncio.sleep(5)
+        #print("Deleted message in roles channel:")
+        #print(message.content)
+        #await message.delete()
 
 
 
