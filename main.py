@@ -43,7 +43,7 @@ async def autoreact(message):
 
 # Delete messages in the roles channel after a delay.
 # Used with Auttaja for self-serviced roles.
-@client.event
+#@client.event
 #async def on_message(message):
     #if message.channel.id == 928139023875211315:
         #await asyncio.sleep(5)
